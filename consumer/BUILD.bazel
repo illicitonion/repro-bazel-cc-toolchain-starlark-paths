@@ -1,0 +1,17 @@
+genrule(
+    name = "gr",
+    outs = ["out"],
+    cmd = "if [[ \"$(CC)\" != \"external/toolchain/bin/clang\" ]]; then echo >&2 Wrong path to clang: $(CC); exit 1; fi ; touch $@",
+    toolchains = ["@rules_cc//cc:current_cc_toolchain"],
+)
+
+cc_toolchain_suite(
+    name = "cc",
+    toolchains = {
+        "k8": "@toolchain//:cc_toolchain",
+        "darwin": "@toolchain//:cc_toolchain",
+        "darwin_x86_64": "@toolchain//:cc_toolchain",
+        "darwin_arm64": "@toolchain//:cc_toolchain",
+    },
+    visibility = ["//visibility:public"],
+)
